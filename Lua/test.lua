@@ -21,22 +21,22 @@ window2 = {
 }
 --4
 printMessageLua = function (str)
-    receivedString = "Превед: "..str
+    receivedString = "Lua.Превед: "..str
     print (receivedString)
 end
 
 --5
 sumNumbers = function (a,b)
-	sq = squareGO (a) -- function squareGO should be set before
+	sq = squareGO (b) -- function squareGO should be setted before
     return a + b, sq
 end
 
 function concat(a, b)
-	return a .. " + " .. b
+	return a .. " & " .. b
 end
 
 function getpage (url)
-	print("wait http..")
+	print("get http.."..url)
      response, error_message = http.request("GET", url, {
         query="page=1",
         headers={Accept="*/*"},
@@ -49,6 +49,6 @@ function getpage (url)
 --	print(response["cookies"]["Vanilla"])
 --	print(response["headers"]["X-Garden-Version"])
 --	print(response["headers"]["Cache-Control"])
-	--print(response["body"])
-	return response["status_code"]
+--	print(response["body"])
+	return response["headers"]["X-Cache"]
 end

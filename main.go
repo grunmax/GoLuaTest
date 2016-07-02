@@ -18,67 +18,79 @@ func init() {
 
 func main() {
 	defer L.Close()
-	if err := L.DoFile("test.lua"); err != nil {
+	if err := L.DoFile("Lua/test.lua"); err != nil {
 		panic(err)
 	}
 
-	// read/write globals vars
+	// read globals vars
 	if answer, err := GetIntLua("answer"); err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println(answer)
+		fmt.Println("answer =", answer)
 	}
 	if testString, err := GetStringLua("testString"); err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println(testString)
+		fmt.Println("testString =", testString)
 	}
 
-	L.SetGlobal("receivedString2", lua.LString("Строка из Go"))
-	testString := L.GetGlobal("receivedString2")
-	fmt.Println(testString)
+	// write global var
+	L.SetGlobal("receivedString", lua.LString("Строка из Go"))
+	if testString, err := GetStringLua("receivedString"); err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("receivedString = ", testString)
+	}
+
+	//create global var
+	L.SetGlobal("receivedString2", lua.LString("Ещё строка из Go"))
+	testString := L.GetGlobal("receivedString2") // with no check
+	fmt.Println("new receivedString2 = ", testString)
 
 	// read/write tables fields
 	win1title := L.GetField(L.GetGlobal("window"), "title")
-	fmt.Println(win1title)
+	fmt.Println("window.title =", win1title)
 
 	win2size := L.GetField(L.GetGlobal("window2"), "size")
 	win2sizeW := L.GetField(win2size, "w")
-	fmt.Println(win2sizeW)
+	fmt.Println("window2.size.w =", win2sizeW)
 	L.SetField(win2size, "w", lua.LNumber(33))
 	win2sizeW = L.GetField(win2size, "w")
-	fmt.Println(win2sizeW)
+	fmt.Println("window2.size.w =", win2sizeW)
 
 	// run lua code from go
 	if result, err := DoFuncLuaRet("concat", []lua.LValue{lua.LString("Go"), lua.LString("Lua")}); err != nil {
 		fmt.Println("concat error")
 	} else {
-		fmt.Println(result)
+		fmt.Println("concat = ", result)
 	}
+
+	// again run lua code from go
 	if _, err := DoFuncLuaRet("printMessageLua", []lua.LValue{lua.LString("Go")}); err != nil {
 		fmt.Println("printMessageLua error")
 	}
 
-	// run go code from lua
-	L.SetGlobal("squareGO", L.NewFunction(square))
+	// set go code to lua
+	L.SetGlobal("squareGO", L.NewFunction(square)) // square is go fun
+	// check setted go code
 	if result, err := DoFuncLuaRet("squareGO", []lua.LValue{lua.LNumber(5)}); err != nil {
 		fmt.Println("squareGO error")
 	} else {
-		fmt.Println(result)
+		fmt.Println("squareGO fun: ", result)
 	}
 
 	//run 2 params
 	if result, err := DoFuncLuaRets("sumNumbers", []lua.LValue{lua.LNumber(2), lua.LNumber(6)}, 2); err != nil {
 		fmt.Println("sumNumbers error")
 	} else {
-		fmt.Println(result)
+		fmt.Println("sumNumbers =", result)
 	}
 
 	// http works
 	if result, err := DoFuncLuaRet("getpage", []lua.LValue{lua.LString("http://vsi.org.ua")}); err != nil {
 		fmt.Println("getpage error")
 	} else {
-		fmt.Println(result)
+		fmt.Println("http fun : ", result)
 	}
 
 }
