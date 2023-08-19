@@ -59,35 +59,35 @@ func main() {
 	fmt.Println("window2.size.w =", win2sizeW)
 
 	// run lua code from go
-	if result, err := DoFuncLuaRet("concat", []lua.LValue{lua.LString("Go"), lua.LString("Lua")}); err != nil {
+	if result, err := DoFuncLuaRet("concat", lua.LString("Go"), lua.LString("Lua")); err != nil {
 		fmt.Println("concat error")
 	} else {
 		fmt.Println("concat = ", result)
 	}
 
 	// again run lua code from go
-	if _, err := DoFuncLuaRet("printMessageLua", []lua.LValue{lua.LString("Go")}); err != nil {
+	if _, err := DoFuncLuaRet("printMessageLua", lua.LString("Go")); err != nil {
 		fmt.Println("printMessageLua error")
 	}
 
 	// set go code to lua
 	L.SetGlobal("squareGO", L.NewFunction(square)) // square is go fun
 	// check setted go code
-	if result, err := DoFuncLuaRet("squareGO", []lua.LValue{lua.LNumber(5)}); err != nil {
+	if result, err := DoFuncLuaRet("squareGO", lua.LNumber(5)); err != nil {
 		fmt.Println("squareGO error")
 	} else {
 		fmt.Println("squareGO fun: ", result)
 	}
 
 	//run 2 params
-	if result, err := DoFuncLuaRets("sumNumbers", []lua.LValue{lua.LNumber(2), lua.LNumber(6)}, 2); err != nil {
+	if result, err := DoFuncLuaRets("sumNumbers", 2, lua.LNumber(2), lua.LNumber(6)); err != nil {
 		fmt.Println("sumNumbers error")
 	} else {
 		fmt.Println("sumNumbers =", result)
 	}
 
 	// http works
-	if result, err := DoFuncLuaRet("getpage", []lua.LValue{lua.LString("http://vsi.org.ua")}); err != nil {
+	if result, err := DoFuncLuaRet("getpage", lua.LString("http://vsi.org.ua")); err != nil {
 		fmt.Println("getpage error")
 	} else {
 		fmt.Println("http fun : ", result)

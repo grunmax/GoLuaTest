@@ -11,25 +11,25 @@ func square(L *lua.LState) int { //*
 	return 1                 // Notify that we pushed one value to the stack
 }
 
-func DoFuncLuaRet(name string, args []lua.LValue) (lua.LValue, error) {
+func DoFuncLuaRet(name string, args ...lua.LValue) (lua.LValue, error) {
 	luaP := lua.P{
 		Fn:      L.GetGlobal(name), // name of Lua function
 		NRet:    1,                 // number of returned values
 		Protect: true,              // return err or panic
 	}
-	if err := L.CallByParams(luaP, args); err != nil {
+	if err := L.CallByParam(luaP, args...); err != nil {
 		return lua.LNil, err
 	}
 	return L.Get(-1), nil
 }
 
-func DoFuncLuaRets(name string, args []lua.LValue, returnedcount int) ([]lua.LValue, error) {
+func DoFuncLuaRets(name string, returnedcount int, args ...lua.LValue) ([]lua.LValue, error) {
 	luaP := lua.P{
 		Fn:      L.GetGlobal(name), // name of Lua function
 		NRet:    returnedcount,     // number of returned values
 		Protect: true,              // return err or panic
 	}
-	if err := L.CallByParams(luaP, args); err != nil {
+	if err := L.CallByParam(luaP, args...); err != nil {
 		return []lua.LValue{}, err
 	}
 	var result []lua.LValue

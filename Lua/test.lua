@@ -44,11 +44,11 @@ function getpage (url)
      })
 --	print(error_message)
 --	print(response["status_code"])
---	print(response["url"])
---	print(response["body_size"])
+	print(response["url"])
+	print(response["body_size"])
 --	print(response["cookies"]["Vanilla"])
 --	print(response["headers"]["X-Garden-Version"])
 --	print(response["headers"]["Cache-Control"])
 --	print(response["body"])
-	return response["headers"]["X-Cache"]
+	return response["status_code"]
 end
