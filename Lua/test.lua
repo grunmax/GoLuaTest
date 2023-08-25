@@ -20,7 +20,7 @@ window2 = {
     }
 }
 --4
-printMessageLua = function (str)
+printMessageLuaL = function (str)
     receivedString = "Lua.Превед: "..str
     print (receivedString)
 end

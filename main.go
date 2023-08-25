@@ -58,34 +58,34 @@ func main() {
 	win2sizeH := L.GetField(win2size, "h")
 	fmt.Println("window2.size.h =", win2sizeH)
 
-	// run lua code from go
+	//pass 2 params, ret 1 param
 	if result, err := DoFuncLuaRet("concatL", lua.LString("Go"), lua.LString("Lua")); err != nil {
 		fmt.Println("concat error")
 	} else {
 		fmt.Println("concat = ", result)
 	}
 
-	// again run lua code from go
-	if _, err := DoFuncLuaRet("printMessageLua", lua.LString("Go")); err != nil {
+	//pass 1 param, ret nothing
+	if _, err := DoFuncLuaRet("printMessageLuaL", lua.LString("Go")); err != nil {
 		fmt.Println("printMessageLua error")
 	}
 
 	if err := registerF("_square", square); err != nil {
-		fmt.Println("_square error")
+		fmt.Println("reg _square error")
 	}
 
 	if err := registerF("_summa", summa); err != nil {
-		fmt.Println("_summa error")
+		fmt.Println("reg _summa error")
 	}
 
-	//ret 1 params
+	//pass 1 param , ret 1 params
 	if result, err := DoFuncLuaRet("squareNumberL", lua.LNumber(6)); err != nil {
 		fmt.Println("squareNumbers error")
 	} else {
 		fmt.Println("squareNumbers =", result)
 	}
 
-	//run 2 params
+	//pass 2 params, ret 2 params
 	if result, err := DoFuncLuaRets("sumNumbersL", 2, lua.LNumber(2), lua.LNumber(6)); err != nil {
 		fmt.Println("sumNumbers error")
 	} else {
