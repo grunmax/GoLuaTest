@@ -27,12 +27,12 @@ end
 
 --5
 squareNumberL = function (a)
-	sq = _square (a) -- function _square should be setted before
+	sq = _square (a) -- function _square should be registered
     return sq
 end
 
 sumNumbersL = function (a,b)
-	sq = _summa (a, b) -- function _summa should be setted before
+	sq = _summa (a, b) -- function _summa should be registered
     return sq, tostring(sq) .. "^"
 end
 
