@@ -1,3 +1,3 @@
 # GoLuaTest
-Exchange data between golang anf Lua (it's no need to have the Lua installed)
+Exchange data between golang and Lua (it's no need to have the Lua installed)
 
