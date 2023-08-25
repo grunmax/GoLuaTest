@@ -55,11 +55,11 @@ func main() {
 	win2sizeW := L.GetField(win2size, "w")
 	fmt.Println("window2.size.w =", win2sizeW)
 	L.SetField(win2size, "w", lua.LNumber(33))
-	win2sizeW = L.GetField(win2size, "w")
-	fmt.Println("window2.size.w =", win2sizeW)
+	win2sizeH := L.GetField(win2size, "h")
+	fmt.Println("window2.size.h =", win2sizeH)
 
 	// run lua code from go
-	if result, err := DoFuncLuaRet("concat", lua.LString("Go"), lua.LString("Lua")); err != nil {
+	if result, err := DoFuncLuaRet("concatL", lua.LString("Go"), lua.LString("Lua")); err != nil {
 		fmt.Println("concat error")
 	} else {
 		fmt.Println("concat = ", result)
@@ -70,27 +70,35 @@ func main() {
 		fmt.Println("printMessageLua error")
 	}
 
-	// set go code to lua
-	L.SetGlobal("squareGO", L.NewFunction(square)) // square is go fun
-	// check setted go code
-	if result, err := DoFuncLuaRet("squareGO", lua.LNumber(5)); err != nil {
-		fmt.Println("squareGO error")
+	if err := registerF("_square", square); err != nil {
+		fmt.Println("_square error")
+	}
+
+	if err := registerF("_summa", summa); err != nil {
+		fmt.Println("_summa error")
+	}
+
+	//ret 1 params
+	if result, err := DoFuncLuaRet("squareNumberL", lua.LNumber(6)); err != nil {
+		fmt.Println("squareNumbers error")
 	} else {
-		fmt.Println("squareGO fun: ", result)
+		fmt.Println("squareNumbers =", result)
 	}
 
 	//run 2 params
-	if result, err := DoFuncLuaRets("sumNumbers", 2, lua.LNumber(2), lua.LNumber(6)); err != nil {
+	if result, err := DoFuncLuaRets("sumNumbersL", 2, lua.LNumber(2), lua.LNumber(6)); err != nil {
 		fmt.Println("sumNumbers error")
 	} else {
-		fmt.Println("sumNumbers =", result)
+		fmt.Println("sumNumbers1 =", result[0])
+		fmt.Println("sumNumbers2 =", result[1])
 	}
 
 	// http works
-	if result, err := DoFuncLuaRet("getpage", lua.LString("http://vsi.org.ua")); err != nil {
+	if result, err := DoFuncLuaRets("getpageL", 2, lua.LString("http://vsi.org.ua")); err != nil {
 		fmt.Println("getpage error")
 	} else {
-		fmt.Println("http fun : ", result)
+		fmt.Println("http code : ", result[0])
+		fmt.Println("http size : ", result[1])
 	}
 
 }

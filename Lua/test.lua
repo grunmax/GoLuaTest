@@ -26,17 +26,22 @@ printMessageLua = function (str)
 end
 
 --5
-sumNumbers = function (a,b)
-	sq = squareGO (b) -- function squareGO should be setted before
-    return a + b, sq
+squareNumberL = function (a)
+	sq = _square (a) -- function _square should be setted before
+    return sq
 end
 
-function concat(a, b)
+sumNumbersL = function (a,b)
+	sq = _summa (a, b) -- function _summa should be setted before
+    return sq, tostring(sq) .. "^"
+end
+
+function concatL(a, b)
 	return a .. " & " .. b
 end
 
-function getpage (url)
-	print("get http.."..url)
+function getpageL (url)
+	print("get http..."..url)
      response, error_message = http.request("GET", url, {
         query="page=1",
         headers={Accept="*/*"},
@@ -44,11 +49,11 @@ function getpage (url)
      })
 --	print(error_message)
 --	print(response["status_code"])
-	print(response["url"])
-	print(response["body_size"])
+--	print(response["url"])
+--	print(response["body_size"])
 --	print(response["cookies"]["Vanilla"])
 --	print(response["headers"]["X-Garden-Version"])
 --	print(response["headers"]["Cache-Control"])
 --	print(response["body"])
-	return response["status_code"]
+	return response["status_code"], response["body_size"] 
 end
